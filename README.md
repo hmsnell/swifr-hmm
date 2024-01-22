@@ -2,9 +2,17 @@
 additions to the SWIF(r) framework using and AODE HMM
 
 ## environment setup 
-`conda create --name swifr python=3.7` \n
-`conda activate swifr` \n
-`pip3 install swifr`
+
+main setup: 
+
+```
+conda create --name swifr python=3.7
+conda activate swifr`
+pip3 install swifr
+
+```
+other packages: 
+
 
 ## pipeline structure 
 1. _SLiM simulations:_ scripts to generate corresponding sweep and neutral simulations - these are hard-coded for a sweep mutation introduction time of 200 gens ago (more times to be added).
