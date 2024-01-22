@@ -1,0 +1,58 @@
+---
+title: "compiled_stats_histograms"
+output: html_document
+date: "2024-01-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r, warning = F, message = F}
+# bring in data + clean
+
+## neutral 
+neutral_xpehh <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/neutral/allsims_xpehh") %>% select(gpos, xpehh_out) %>% mutate(type = 'neutral') %>% mutate(gpos = as.numeric(gpos)) %>% sample_n(2176)
+neutral_ihs <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/neutral/allsims_ihs", col_names = F) %>% select(X2, X6) %>% mutate(type = 'neutral') %>% rename('gpos' = X2, 'ihs_out' = X6)
+neutral_fst <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/neutral/allsims_fst") %>% rename('gpos' = SNP_name, 'fst_out' = FST) %>%  mutate(type = 'neutral') %>% mutate(fst_out = as.numeric(fst_out)) %>% mutate(gpos = as.numeric(gpos)) %>% sample_n(2176)
+neutral_nsl <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/neutral/allsims_nsl", col_names = F) %>% select(X2, X6) %>% mutate(type = 'neutral') %>% rename('gpos' = X2, 'nsl_out' = X6)
+neutral_ddaf <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/neutral/allsims_ddaf") %>% rename('gpos' = SNP_name, 'ddaf_out' = DDAF) %>%  mutate(type = 'neutral') %>% mutate(ddaf_out = as.numeric(ddaf_out)) %>% mutate(gpos = as.numeric(gpos))
+
+## sweep 
+sweep_xpehh <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/testing/sweep_pop1/allsims_xpehh") %>% select(gpos, xpehh_out) %>% mutate(type = 'neutral') %>% mutate(gpos = as.numeric(gpos)) %>% mutate(type = ifelse(gpos == 5001, 'sweep', ifelse(gpos <= 5500 & gpos >= 4500 & gpos != 5001, 'linked', 'neutral')))
+sweep_ihs <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/sweep_pop1/allsims_ihs_sweep", col_names = F) %>% select(X2, X6) %>% mutate(type = 'neutral') %>% rename('gpos' = X2, 'ihs_out' = X6)
+sweep_fst <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/testing/sweep_pop1/allsims_fst") %>% rename('gpos' = SNP_name, 'fst_out' = FST) %>%  mutate(type = 'neutral') %>% mutate(fst_out = as.numeric(fst_out)) %>% mutate(gpos = as.numeric(gpos)) %>% mutate(type = ifelse(gpos == 5001, 'sweep', ifelse(gpos <= 5500 & gpos >= 4500 & gpos != 5001, 'linked', 'neutral')))
+sweep_nsl <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/sweep_pop1/allsims_nsl_sweep", col_names = F) %>% select(X2, X6) %>% mutate(type = 'neutral') %>% rename('gpos' = X2, 'nsl_out' = X6)
+sweep_ddaf <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/sweep_pop1/allsims_ddaf_sweep") %>% rename('gpos' = SNP_name, 'ddaf_out' = DDAF) %>%  mutate(type = 'neutral') %>% mutate(ddaf_out = as.numeric(ddaf_out)) %>% mutate(gpos = as.numeric(gpos))
+
+# concatenate neutral and sweep data for figure
+xpehh_data <- rbind(neutral_xpehh, sweep_xpehh)
+fst_data <- rbind(neutral_fst, sweep_fst)
+```
+
+```{r, warning = F}
+## xpehh
+xpehh_histogram <- ggplot(data = xpehh_data, aes(x = xpehh_out, col = type)) + geom_density() + labs(title = "xpehh histogram - pop1", x = 'xpehh value', y = 'frequency') + theme_light()
+xpehh_histogram
+``` 
+
+```{r, warning = F}
+## fst 
+fst_histogram <- ggplot(data = fst_data, aes(x = fst_out, col = type)) + geom_density() + labs(title = "fst histogram - pop1", x = 'fst value', y = 'frequency')
+fst_histogram
+```
+
+```{r}
+# xpehh pop2 
+neutral_xpehh <- read_delim("/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/sts/5kya/neutral/allsims_xpehh") %>% select(gpos, xpehh_out) %>% mutate(type = 'neutral') %>% mutate(gpos = as.numeric(gpos)) %>% sample_n(2176)
+```
+
+
+
+
+
+
+
+
+
