@@ -7,7 +7,7 @@ main setup:
 
 ```
 conda create --name swifr python=3.7
-conda activate swifr`
+conda activate swifr
 pip3 install swifr
 ```
 other packages: 
