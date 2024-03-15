@@ -1,4 +1,4 @@
-//  SWEEP SIMULATION SCRIPT 5KYA - last updated 2024-02-06
+//  SWEEP SIMULATION SCRIPT 15KYA - last updated 2024-02-09
 
 // Keywords: migration, dispersal
 // Model based on Gravel et al. 2011, doi:10.1073/pnas.1019276108 (hereafter "paper")
@@ -89,7 +89,7 @@ initialize() {
 	p3.setSubpopulationSize(asInteger(p3_size));
 }
 
-78824 late() { // 200 gens from present, introduce beneficial mutation in target population
+78424 late() { // 600 gens from present, introduce beneficial mutation in target population
 
 	// save sim state
 	sim.outputFull(tempdir() + "slim_" + simID + ".txt");
@@ -136,7 +136,7 @@ initialize() {
 	//print(size(mut));
 	if (size(freq) > 0)
 	{
-		if (freq > threshold) // set according to arbitrary threshold in target population only - current value across all sims is 0.1
+		if (freq > threshold) // set according to arbitrary threshold in target population only - current value across all sims is 0.1 
 		{
 			cat(simID + ": ESTABLISHED\n");
 			community.deregisterScriptBlock(self);

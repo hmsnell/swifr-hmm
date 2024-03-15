@@ -7,36 +7,18 @@ initialize() {
 	// define input constants from command line
 	if (exists("slimgui")) {
  		defineConstant("seed", 111111);
- 		defineConstant("alpha_yri", 0.0);
- 		defineConstant("alpha_ceu", 0.0);
- 		defineConstant("alpha_chb", 0.0);
  		defineConstant("N", 1000); // sample about 1/7 of the population
+		defineConstant("run_name", 12345);
+		defineConstant("direc", "/users/hsnell/data/hsnell/swifr/allscenarios_100sims/");
 		//defineConstant("scenario", "neutral");
  	}
-
-	defineConstant("direc", "/users/hsnell/data/hsnell/swifr/pop1_AF1_alltimes/output/slim/5kya/neutral/");
  	
- 	setSeed(seed); 
+ 	// setSeed(seed); 
 	initializeMutationRate(2.36e-8); // theta=3813.75
 	initializeMutationType("m1", 0.5, "f", 0.0);
-	initializeMutationType("m2", 0.5, "f", alpha_yri);  // introduced mutation
-	initializeMutationType("m3", 0.5, "f", alpha_ceu);  // introduced mutation
-	initializeMutationType("m4", 0.5, "f", alpha_chb);  // introduced mutation
-	
-	m2.mutationStackPolicy = "f"; 	// m2 should not be overlapped by other mutations
-	m2.color = "cyan";
-	m2.convertToSubstitution = F; // m2 will not become a substitution
-	
-	m3.mutationStackPolicy = "f"; 	// m3 should not be overlapped by other mutations
-	m3.color = "red";
-	m3.convertToSubstitution = F; // m3 will not become a substitution
-	
-	m4.mutationStackPolicy = "f"; 	// m4 should not be overlapped by other mutations
-	m4.color = "green";
-	m4.convertToSubstitution = F; // m4 will not become a substitution
 	
 	initializeGenomicElementType("g1", m1, 1.0);
-	initializeGenomicElement(g1, 0, 9999); // paper uses 4.04e6, 5007837, etc.
+	initializeGenomicElement(g1, 0, 499999); // paper uses 4.04e6, 5007837, etc.
 	initializeRecombinationRate(1e-8);
 }
 
@@ -51,10 +33,6 @@ initialize() {
 // Thus, simulation should end at generation 1+73104+5919.131117=79024
 73105 early() { p1.setSubpopulationSize(asInteger(round(14474.54608753566))); } // paper rounds to 14474
 
-73105 late() {
-// spot for adaptive mutation originating in ancestral african population as expansion begins 
-	p1.genomes.mutationsOfType(m2).setSelectionCoeff(alpha_yri); }
-
 // SPLIT Eurasians (p2) from Africans (p1) and SET UP MIGRATION between them
 // This occurs 2056.396652 generations (51409.9163 years) ago; paper rounds to 2040 gens (51000 yr)
 // Relative to beginning, this is generation 79024-2056.396652=76968
@@ -63,11 +41,6 @@ initialize() {
 	p1.setMigrationRates(c(p2), c(15.24422112e-5)); // paper rounds to 15e-5
 	p2.setMigrationRates(c(p1), c(15.24422112e-5)); // paper rounds to 15e-5
 }
-
-76968 late() {
-// spot for adaptive mutation originating in eurasian population once split from ancestral Africans
-	p2.genomes.mutationsOfType(m2).setSelectionCoeff(alpha_ceu); }
-
 
 // SPLIT p2 into European (p2) and East Asian (p3) subpopulations; RESIZE; SET UP MIGRATION between them
 // This occurs 939.8072428 generations (23495.18107 years) ago; paper rounds to 920 gens (23000 yr)
@@ -95,40 +68,14 @@ initialize() {
 	p3.setSubpopulationSize(asInteger(p3_size));
 }
 
-78824 late() { // set only one of these at a time to given selection coefficient, the rest to zero (just throws a neutral mutation in place)
-
-	// save sim state
-	sim.outputFull(tempdir() + "slim_" + simID + ".txt");
-
-	// introduce the beneficial mutation in pop 1
-	target = sample(p1.genomes, 1);
-	target.addNewDrawnMutation(m2, 5000);	
-	// introduce the beneficial mutation in pop2
-	target = sample(p2.genomes, 1);
-	target.addNewDrawnMutation(m3, 5000);
-	// introduce the beneficial mutation in pop3
-	target = sample(p3.genomes, 1);
-	target.addNewDrawnMutation(m4, 5000);
-	
-	// set given selection coefficients for sweep
-	p1.genomes.mutationsOfType(m2).setSelectionCoeff(alpha_yri);
-	p2.genomes.mutationsOfType(m3).setSelectionCoeff(alpha_ceu);
-	p3.genomes.mutationsOfType(m4).setSelectionCoeff(alpha_chb); 
-	
-	// spot for adaptive mutation originating in east asian subpopulation once split from Eurasians 
-} 
-
 79024 late() { // terminate and output VCF
     x = getSeed();
     print("true sim seed: " + x);
-    print(sim.mutationFrequencies(p1, sim.mutationsOfType(m2)));
-    print(sim.mutationFrequencies(p2, sim.mutationsOfType(m3)));
-    print(sim.mutationFrequencies(p3, sim.mutationsOfType(m4)));
     d = p1.sampleIndividuals(N).genomes; 
     e = p2.sampleIndividuals(N).genomes;
     f = p3.sampleIndividuals(N).genomes;
     vec = c(d,e,f);
-    vec.outputVCF(filePath= direc + "YRI." + alpha_yri + ".CEU." + alpha_ceu + ".CHB." + alpha_chb + ".SEED." + seed + ".SS." + N + ".vcf");
+    vec.outputVCF(filePath= direc + "neutral" + "." + run_name + ".vcf");
 }
 
 
