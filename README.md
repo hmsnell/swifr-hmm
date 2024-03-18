@@ -4,8 +4,8 @@ additions to the SWIF(r) framework using and AODE HMM
 ## environment setup 
 
 see yamls/ folder for two main envs: 
-- swifr_tools: contains plink, vcftools, selscan, scikit-allel, etc.
-- swifr_example: help from CCV to build since this was tricky. used python version 3.7 
+- **swifr_tools**: contains plink, vcftools, selscan, scikit-allel, etc.
+- **swifr_example**: help from CCV to build since this was tricky. used python version 3.7 
 
 
 ## pipeline structure  
