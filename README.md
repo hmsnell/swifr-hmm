@@ -16,6 +16,7 @@ for all of the following scripts, i used metadata files to indicate the unique v
 | ... | ... | ... | ... | ... | ... |
 | 100 | pop1 | 200 | 0.2 | 0.0376 | 0.2 | 
 | 1 | pop1 | 200 | 0.4 | 0.0415 | 0.3 | 
+| ... | ... | ... | ... | ... | ... |
 
 ## pipeline structure  
 1. _SLiM simulations:_ scripts to generate corresponding sweep and neutral simulations - these are hard-coded for different sweep mutation introduction times.  
