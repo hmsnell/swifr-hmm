@@ -3,14 +3,9 @@ additions to the SWIF(r) framework using and AODE HMM
 
 ## environment setup 
 
-main setup: 
-
-```
-conda create --name swifr python=3.7
-conda activate swifr
-pip3 install swifr
-```
-other packages: 
+see yamls/ folder for two main envs: 
+- swifr_tools: contains plink, vcftools, selscan, scikit-allel, etc.
+- swifr_example: help from CCV to build since this was tricky. used python version 3.7 
 
 
 ## pipeline structure  
